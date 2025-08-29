@@ -1,0 +1,41 @@
+seed: 657838
+gpu: true
+
+dataset:
+  name: hyperbole
+  path: hyperbole.jsonl
+  split:
+    train: 0.8
+    dev: 0.1
+    test: 0.1
+  max_length: 35
+
+model:
+  type: pythia
+  name: EleutherAI/pythia-6.9b
+  freeze: 1
+  sentence_rep: hs-mean
+  layer: all
+
+regimen:
+  inds: 0.001,0.002,0.004,0.008,0.016,0.032,0.0625,0.125,0.25,0.5,1
+
+probe:
+  hidden_dim: 1024
+  probe_hidden_layers: 1
+  dropout: 0
+  params_path: probe.params
+  
+probe_training:
+  batch_size: 20
+  epochs: 40
+  loss: cross-entropy
+  weight_decay: 0.0
+  learning_rate: 0.0001
+  wait_without_improvement_for: 4
+  
+reporting:
+  root: /report
+  reporting_methods:
+    - label_accuracy
+    - f1_class
